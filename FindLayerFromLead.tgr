@@ -1,0 +1,10 @@
+trigger FindLayerFromLead on Lead (after insert, after update) { 
+    if(!System.isFuture()){
+    	Lead l = [SELECT Id, Address from Lead where Id = : trigger.new[0].id];
+        //This section turns the address into a set of coordinates
+        Address myAddr = l.Address;
+        String fulladdress = myAddr.getStreet() + ', ' + myAddr.getCity() + ', '+myAddr.getState()+myAddr.getPostalCode()+myAddr.getCountry();
+        String LeadID = l.Id;
+        GeocodeAddress.ConvertAddress(fulladdress, LeadID);
+    }
+}
