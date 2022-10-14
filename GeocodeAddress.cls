@@ -12,6 +12,14 @@ global class GeocodeAddress {
         // Log the resulting geographical coordinates and formatted address. 
         Object myData = response.get('data');
         system.debug(myData);
+        if(myData == null){
+            system.debug('bad address data');
+            Lead leadToUpdate = [SELECT Id, LastName FROM Lead WHERE ID =: LeadId];
+            system.debug(leadtoUpdate.LastName);
+            leadToUpdate.inLayer__c = 'BAD DATA';
+            update leadToUpdate;
+            return;
+        }
         String dataString = myData.toString();
         system.debug(dataString);
 
